@@ -30,7 +30,8 @@ class Test1(TestCase):
         self.assertEqual(actual, expected)
 
 class Dessert(TestCase):
-    w = Words(["i", "like", "dessert", "and", "I", "like", "Dessert", "Labs"])
+    uw = ["i", "like", "dessert", "and", "I", "like", "Dessert", "Labs"]
+    w = Words(format_words(uw))
 
     def test_1(self):
         actual = count_words(self.w, 'word')
@@ -48,5 +49,17 @@ class Dessert(TestCase):
         actual = count_words(self.w, 'labs')
         expected = 1
         self.assertEqual(actual, expected)
+
+    def test_cooc(self):
+        actual = cooccurrence(self.w, 'dessert', 'like', 3)
+        expected = 2
+        self.assertEqual(actual, expected)
+        actual = cooccurrence(self.w, 'dessert', 'labs', 3)
+        expected = 1
+        self.assertEqual(actual, expected)
+        actual = cooccurrence(self.w, 'labs', 'dessert', 3)
+        expected = 1
+        self.assertEqual(actual, expected)
+
 
 

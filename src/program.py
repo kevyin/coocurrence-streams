@@ -7,26 +7,32 @@ import subprocess
 import os.path
 from optparse import OptionParser
 
+word_pat = re.compile('[\W_]+')
+
 def cooccurrence(words, wordA, wordB, K=3):
-    pass
+    word_list = words.get_words()
+
+
 
 def count_words(words, wordA):
-    return words.get_cnt(wordA.lower())
-
+    return words.get_cnt(wordA.lower().strip())
 
 def cooccurrence_prob(words, A, B, k):
     return cooccurrence(words, A, B, k) / count_words(words, A)
 
+def format_words(uf_words):
+    newwords = []
+    for word in uf_words:
+        newwords.append(word_pat.sub('', word.lower()).strip())
+    return newwords
 
 class Words:
 
     def __init__(self, mywords):
         words = []
         word_cnts = {}
-        words = mywords
+        words = format_words(mywords)
         for word in words:
-            pattern = re.compile('[\W_]+')
-            word = pattern.sub('', word.lower())
             if word_cnts.has_key(word):
                 word_cnts[word] += 1
             else:
@@ -39,6 +45,8 @@ class Words:
     def get_cnt(self, word):
         return self.word_cnts[word] if self.word_cnts.has_key(word) else 0
 
+    def get_words(self):
+        return self.words
 
 
 #####################################################################################
