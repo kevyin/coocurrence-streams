@@ -122,7 +122,8 @@ def main():
     while True:
         line = sys.stdin.readline()
         words = line.split()
-        print( "%.2f" % (cooccurrence_prob(input_words, words[0], words[1])))
+        if len(words) > 1:
+            print( "%.2f" % (cooccurrence_prob(input_words, words[0], words[1])))
 
 
 ###############################################################################
