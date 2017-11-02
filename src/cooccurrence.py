@@ -48,7 +48,7 @@ class Words:
         word_its_ = itertools.tee(formatted_words_it, total_it)
         word_its = []
 
-        for ws in itertools.izip(word_its_):
+        for ws in zip(word_its_):
             for w in ws:
                 word_its.append(w)
 
@@ -58,20 +58,20 @@ class Words:
         for n in range(0, k):
             cnt = k - n
             while cnt > 0:
-                word_its[n].next()
+                word_its[n].__next__()
                 cnt = cnt - 1
 
         # pad the last k ie stream no >k
         for n in range(k+1, total_it):
                 word_its[n] = itertools.chain([None]*(n-k), word_its[n])
 
-        for words in itertools.izip_longest(*word_its):
+        for words in itertools.zip_longest(*word_its):
             # kth word is the middle
             wordk = words[k]
 
             if wordk is not None:
                 # update word counts
-                if word_cnts.has_key(wordk):
+                if wordk in word_cnts:
                     word_cnts[wordk] += 1
                 else:
                     word_cnts[wordk] = 1
@@ -82,7 +82,7 @@ class Words:
                 for uw in uniq_ws:
                     if uw is not None:
                         id = word_pair_key(wordk, uw, format=False)
-                        if cooc.has_key(id):
+                        if id in cooc:
                             cooc[id] += 1
                         else:
                             cooc[id] = 1
@@ -92,10 +92,10 @@ class Words:
         vars(self).update(locals())
 
     def get_word_cnt(self, word):
-        return self.word_cnts[word] if self.word_cnts.has_key(word) else 0
+        return self.word_cnts[word] if word in self.word_cnts else 0
 
     def get_cooc(self, key):
-        return self.cooc[key] if self.cooc.has_key(key) else 0
+        return self.cooc[key] if key in self.cooc else 0
 
 
 #####################################################################################
@@ -122,8 +122,7 @@ def main():
     while True:
         line = sys.stdin.readline()
         words = line.split()
-        # print "%.2f" % (prob(words[0].strip(), words[1].strip()))
-        print "%.2f" % (cooccurrence_prob(input_words, words[0], words[1]))
+        print( "%.2f" % (cooccurrence_prob(input_words, words[0], words[1])))
 
 
 ###############################################################################

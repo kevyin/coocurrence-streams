@@ -81,7 +81,7 @@ def readInput():
                 yield word
 
 class CatInHat(TestCase):
-    print os.getcwd()
+    print(os.getcwd())
 
     w = Words(readInput(), 3)
     # print w.get_word_cnt('cat')
